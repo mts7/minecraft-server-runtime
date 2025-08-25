@@ -38,7 +38,7 @@ services:
       - crafty
     restart: always
     volumes:
-      - ./listener:/app:ro
+      - ./src/listener:/app:ro
       - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_MAIN_UUID}/logs:/logs:ro
     env_file: .env
 
@@ -49,6 +49,6 @@ services:
       - crafty
     restart: always
     volumes:
-      - ./listener:/app:ro
+      - ./src/listener:/app:ro
       - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_ALTERNATE_UUID}/logs:/logs:ro
     env_file: .env
