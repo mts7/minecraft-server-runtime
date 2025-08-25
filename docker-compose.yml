@@ -1,0 +1,54 @@
+version: '3'
+services:
+  crafty:
+    container_name: crafty_container
+    image: registry.gitlab.com/crafty-controller/crafty-4:latest
+    restart: unless-stopped
+    environment:
+      - TZ=America/New_York
+      - JAVA_TOOL_OPTIONS=-Djava.net.preferIPv4Stack=true
+    ports:
+      # Crafty Panel
+      - "8022:8000"
+      - "8422:8443"
+
+      # Server - Alternate
+      - "8122:8122"
+      - "19122:19122/udp"
+      - "25562:25562"
+
+      # Server - Main
+      - "8123:8123"
+      - "19132:19132/udp"
+      - "25565:25565"
+    volumes:
+      - ${CRAFTY_DIRECTORY}/docker/backups:/crafty/backups
+      - ${CRAFTY_DIRECTORY}/docker/logs:/crafty/logs
+      - ${CRAFTY_DIRECTORY}/docker/servers:/crafty/servers
+      - ${CRAFTY_DIRECTORY}/docker/config:/crafty/app/config
+      - ${CRAFTY_DIRECTORY}/docker/import:/crafty/import
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
+  listener-main:
+    build: src/listener
+    container_name: listener-main-notifier
+    depends_on:
+      - crafty
+    restart: always
+    volumes:
+      - ./listener:/app:ro
+      - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_MAIN_UUID}/logs:/logs:ro
+    env_file: .env
+
+  listener-alt:
+    build: src/listener
+    container_name: listener-alt-notifier
+    depends_on:
+      - crafty
+    restart: always
+    volumes:
+      - ./listener:/app:ro
+      - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_ALTERNATE_UUID}/logs:/logs:ro
+    env_file: .env
