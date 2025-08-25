@@ -1,0 +1,7 @@
+{
+  "game_version": "1.21.8",
+  "loader": "fabric",
+  "log_level": "INFO",
+  "log_path": "server/logs",
+  "mods_dir": "server/mods"
+}
