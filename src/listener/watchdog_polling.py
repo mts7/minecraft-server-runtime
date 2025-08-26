@@ -1,12 +1,14 @@
 import os
 import time
-from dotenv import load_dotenv
-from watchdog.observers.polling import PollingObserver
-from watchdog.events import FileSystemEventHandler, FileSystemEvent
 from typing import Optional
+
+from dotenv import load_dotenv
+from watchdog.events import FileSystemEvent, FileSystemEventHandler
+from watchdog.observers.polling import PollingObserver
 
 load_dotenv()
 LOG_PATH = os.getenv("LOG_PATH", "/logs/latest.log")
+
 
 class LogHandler(FileSystemEventHandler):
     def __init__(self):
@@ -41,10 +43,14 @@ class LogHandler(FileSystemEventHandler):
             print(f"[watchdog] Error reading log: {e}")
             return None
 
+
 def main() -> None:
     print(f"[watchdog] Watching {LOG_PATH}")
     observer = PollingObserver()
-    observer.schedule(LogHandler(), path=os.path.dirname(LOG_PATH), recursive=False)
+    observer.schedule(
+        LogHandler(),
+        path=os.path.dirname(LOG_PATH),
+        recursive=False)
     observer.start()
     try:
         while True:
@@ -53,6 +59,6 @@ def main() -> None:
         observer.stop()
     observer.join()
 
+
 if __name__ == "__main__":
     main()
-

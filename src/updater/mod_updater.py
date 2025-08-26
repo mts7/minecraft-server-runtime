@@ -4,11 +4,11 @@ import json
 import logging
 import re
 import sys
+from logging.handlers import RotatingFileHandler
+from pathlib import Path
+from typing import Any, Dict, TypedDict
 
 import requests
-from pathlib import Path
-from logging.handlers import RotatingFileHandler
-from typing import Any, Dict, TypedDict
 
 LOG_FILE: str = "mod_update.log"
 LOG_LEVELS: Dict[str, int] = {
@@ -34,22 +34,18 @@ class UpdateSettings(TypedDict):
 
 class UpdateError(Exception):
     """Base exception for known errors during the update process."""
-    pass
 
 
 class ApiFailed(UpdateError):
     """Raised when the Modrinth API request fails."""
-    pass
 
 
 class MissingSetting(UpdateError):
     """Raised when required settings are not provided."""
-    pass
 
 
 class NoCompatibleVersion(UpdateError):
     """Raised when no compatible version of a mod can be found."""
-    pass
 
 
 def get_latest_compatible_version(
@@ -95,7 +91,7 @@ def _get_version_data(
         "version_type": version_type,
     }
 
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, timeout=15)
     if not response.ok:
         raise ApiFailed(
             "Modrinth API failed for "
@@ -164,7 +160,9 @@ def resolve_settings(args: argparse.Namespace) -> UpdateSettings:
         missing.append("loader")
 
     if missing:
-        raise MissingSetting(f"Missing required settings: {', '.join(missing)}")
+        raise MissingSetting(
+            f"Missing required settings: {
+                ', '.join(missing)}")
 
     log_path = get("log_path", Path("../scripts"))
     log_level = get("log_level", "INFO")
@@ -220,7 +218,7 @@ def update_mod(
     url: str = latest["files"][0]["url"]
     new_path: Path = mods_dir / latest_filename
 
-    response = requests.get(url)
+    response = requests.get(url, timeout=30)
     new_path.write_bytes(response.content)
 
     logging.debug(f"Deleting {file.name}")

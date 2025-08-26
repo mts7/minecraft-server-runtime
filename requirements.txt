@@ -1,0 +1,2 @@
+-r src/listener/requirements.txt
+-r src/updater/requirements.txt

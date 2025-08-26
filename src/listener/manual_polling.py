@@ -1,15 +1,18 @@
 import os
 import time
+
 from dotenv import load_dotenv
 
 load_dotenv()
 LOG_PATH = os.getenv("LOG_PATH", "/logs/latest.log")
+
 
 def get_initial_offset(path: str) -> int:
     try:
         return os.path.getsize(path)
     except FileNotFoundError:
         return 0
+
 
 def main():
     print(f"[polling] Watching {LOG_PATH}")
@@ -30,6 +33,6 @@ def main():
             pass
         time.sleep(1)
 
+
 if __name__ == "__main__":
     main()
-

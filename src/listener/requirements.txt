@@ -1,2 +1,5 @@
+inotify-simple
 python-dotenv
-requests
+requests>=2.32.5
+tox
+watchdog
