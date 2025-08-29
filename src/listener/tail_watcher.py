@@ -3,7 +3,7 @@ import subprocess  # nosec[B404]
 
 from dotenv import load_dotenv
 
-from src.listener.event_router import route_event
+from event_router import route_event
 
 load_dotenv()
 LOG_PATH = os.getenv("LOG_PATH", "/logs/latest.log")

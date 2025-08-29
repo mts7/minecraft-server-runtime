@@ -2,6 +2,8 @@ import os
 
 import requests
 
+SERVER_NAME = os.getenv("SERVER_NAME")
+SERVER_UUID = os.getenv("SERVER_UUID")
 SLACK_WEBHOOK = os.getenv("SLACK_WEBHOOK")
 
 
@@ -14,7 +16,26 @@ def send_to_slack(message: str, color: str = "#cccccc") -> None:
         "attachments": [
             {
                 "color": color,
-                "text": message,
+                "blocks": [
+                    {
+                        "type": "header",
+                        "text" : {
+                            "type": "plain_text",
+                            "text": f"{SERVER_NAME} Minecrafter Server "
+                                    f"at {SERVER_UUID}"
+                        }
+                    },
+                    {
+                        "type": "divider"
+                    },
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "plain_text",
+                            "text": message
+                        }
+                    }
+                ]
             }
         ]
     }
