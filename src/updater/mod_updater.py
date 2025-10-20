@@ -55,10 +55,13 @@ def get_latest_compatible_version(
     if not versions:
         logging.debug(f"Looking for beta version for {slug}")
         versions = _get_version_data(slug, game_version, loader, "beta")
+    if not versions:
+        logging.debug(f"Looking for beta version for {slug}")
+        versions = _get_version_data(slug, game_version, loader, "alpha")
 
     if not versions:
         raise NoCompatibleVersion(
-            f"No compatible release or beta version for {slug} "
+            f"No compatible release, beta, or alpha version for {slug} "
             f"(MC {game_version}, loader {loader})"
         )
 
@@ -161,8 +164,8 @@ def resolve_settings(args: argparse.Namespace) -> UpdateSettings:
 
     if missing:
         raise MissingSetting(
-            f"Missing required settings: {
-                ', '.join(missing)}")
+            f"Missing required settings: {', '.join(missing)}"
+        )
 
     log_path = get("log_path", Path("../scripts"))
     log_level = get("log_level", "INFO")
@@ -234,14 +237,15 @@ def main() -> None:
         setup_logging(log_path, settings["log_level"])
 
         for mod_file in settings["mods_dir"].glob("*.jar"):
-            update_mod(
-                mod_file,
-                settings["mods_dir"],
-                settings["game_version"],
-                settings["loader"]
-            )
-    except UpdateError as e:
-        logging.error(f"❌ Error: {e}")
+            try:
+                update_mod(
+                    mod_file,
+                    settings["mods_dir"],
+                    settings["game_version"],
+                    settings["loader"]
+                )
+            except UpdateError as e:
+                logging.error(f"❌ Error: {e}")
     except Exception as e:
         logging.error(f"Unknown exception: {e}")
 
