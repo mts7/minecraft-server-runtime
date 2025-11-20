@@ -19,7 +19,7 @@ def send_to_slack(message: str, color: str = "#cccccc") -> None:
                 "blocks": [
                     {
                         "type": "header",
-                        "text" : {
+                        "text": {
                             "type": "plain_text",
                             "text": f"{SERVER_NAME} Minecrafter Server "
                                     f"at {SERVER_UUID}"

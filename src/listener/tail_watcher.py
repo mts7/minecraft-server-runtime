@@ -2,7 +2,6 @@ import os
 import subprocess  # nosec[B404]
 
 from dotenv import load_dotenv
-
 from event_router import route_event
 
 load_dotenv()

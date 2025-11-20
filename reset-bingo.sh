@@ -2,5 +2,9 @@
 
 . .env
 
-rm -rf ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_ALTERNATE_UUID}/Fetchr-5.2.2/
-unzip ${CRAFTY_DIRECTORY}/downloads/Fetchr-bingo/Fetchr-5.2.2.zip -d ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_ALTERNATE_UUID}
+fetchr="Fetchr-5.3-beta5"
+server="${CRAFTY_DIRECTORY}/docker/servers/${SERVER_ALTERNATE_UUID}"
+
+rm -rf ${server}/${fetchr}/
+unzip ${CRAFTY_DIRECTORY}/downloads/${fetchr}.zip -d ${server}
+
