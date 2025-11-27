@@ -13,11 +13,9 @@ services:
 
       # Server - Alternate
       - "8122:8122"
-      - "25563:25562"
 
       # Server - Main
       - "8123:8123"
-      - "25566:25565"
     volumes:
       - ${CRAFTY_DIRECTORY}/docker/backups:/crafty/backups
       - ${CRAFTY_DIRECTORY}/docker/logs:/crafty/logs
