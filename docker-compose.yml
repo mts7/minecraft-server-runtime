@@ -36,8 +36,11 @@ services:
   haproxy:
     image: haproxy:latest
     container_name: minecraft-haproxy
+    environment:
+      - TZ=America/New_York
     ports:
-      - "25565:25565/tcp"  # Java
+      - "25565:25565/tcp"  # Main
+      - "25562:25562/tcp"  # Alternate
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     restart: unless-stopped
@@ -53,6 +56,7 @@ services:
       - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_MAIN_UUID}/logs:/logs:ro
     env_file: .env
     environment:
+      TZ: America/New_York
       SERVER_NAME: Main
       SERVER_UUID: ${SERVER_MAIN_UUID}
 
@@ -67,6 +71,7 @@ services:
       - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_ALTERNATE_UUID}/logs:/logs:ro
     env_file: .env
     environment:
+      TZ: America/New_York
       SERVER_NAME: Alternate
       SERVER_UUID: ${SERVER_ALTERNATE_UUID}
 
