@@ -31,29 +31,15 @@ services:
       - 8.8.8.8
       - 1.1.1.1
 
-  java_proxy:
-    image: haproxy:2.9
-    container_name: java_proxy
-    restart: always
+  haproxy:
+    image: haproxy:latest
+    container_name: minecraft-haproxy
     ports:
-      - "25565:25565/tcp"
-      - "25562:25562/tcp"
+      - "25565:25565/tcp"  # Java
+      - "19132:19132/udp"  # Bedrock
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-    depends_on:
-      - crafty
-
-  bedrock_proxy:
-    image: nginx:stable-alpine
-    container_name: bedrock_proxy
-    restart: always
-    ports:
-      - "19132:19132/udp"
-      - "19122:19122/udp"
-    volumes:
-      - ./nginx-bedrock.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - crafty
+    restart: unless-stopped
 
   listener-main:
     build: src/listener
