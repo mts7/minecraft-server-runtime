@@ -13,31 +13,27 @@ def send_to_slack(message: str, color: str = "#cccccc") -> None:
         return
 
     payload = {
-        "attachments": [
+        "blocks": [
             {
-                "color": color,
-                "blocks": [
-                    {
-                        "type": "header",
-                        "text": {
-                            "type": "plain_text",
-                            "text": f"{SERVER_NAME} Minecrafter Server "
-                                    f"at {SERVER_UUID}"
-                        }
-                    },
-                    {
-                        "type": "divider"
-                    },
-                    {
-                        "type": "section",
-                        "text": {
-                            "type": "plain_text",
-                            "text": message
-                        }
-                    }
-                ]
+                "type": "header",
+                "text": {
+                    "type": "plain_text",
+                    "text": f"{SERVER_NAME} Minecrafter Server "
+                            f"at {SERVER_UUID}"
+                }
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": message
+                }
             }
         ]
+        "text": f"Minecraft Alert on ${SERVER_NAME}"
     }
 
     try:

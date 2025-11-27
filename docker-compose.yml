@@ -1,4 +1,3 @@
-version: '3'
 services:
   crafty:
     container_name: crafty_container
@@ -27,6 +26,11 @@ services:
       - ${CRAFTY_DIRECTORY}/docker/servers:/crafty/servers
       - ${CRAFTY_DIRECTORY}/docker/config:/crafty/app/config
       - ${CRAFTY_DIRECTORY}/docker/import:/crafty/import
+    deploy:
+      resources:
+        limits:
+          cpus: '5.0'
+          memory: 20g
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -44,6 +48,8 @@ services:
     environment:
       SERVER_NAME: Main
       SERVER_UUID: ${SERVER_MAIN_UUID}
+    extra_hosts:
+      - "physical-host:host-gateway"
 
   listener-alt:
     build: src/listener
@@ -58,3 +64,6 @@ services:
     environment:
       SERVER_NAME: Alternate
       SERVER_UUID: ${SERVER_ALTERNATE_UUID}
+    extra_hosts:
+      - "physical-host:host-gateway"
+
