@@ -13,12 +13,9 @@ services:
 
       # Server - Alternate
       - "8122:8122"
-      - "19122:19122/udp"
-      - "25562:25562"
 
       # Server - Main
       - "8123:8123"
-      - "19132:19132/udp"
     volumes:
       - ${CRAFTY_DIRECTORY}/docker/backups:/crafty/backups
       - ${CRAFTY_DIRECTORY}/docker/logs:/crafty/logs
