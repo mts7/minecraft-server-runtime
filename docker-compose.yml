@@ -32,6 +32,8 @@ services:
     dns:
       - 8.8.8.8
       - 1.1.1.1
+    networks:
+      - minecraft
 
   mc_proxy:
     image: haproxy:2.9
@@ -44,6 +46,8 @@ services:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     depends_on:
       - crafty
+    networks:
+      - minecraft
 
   listener-main:
     build: src/listener
@@ -58,8 +62,8 @@ services:
     environment:
       SERVER_NAME: Main
       SERVER_UUID: ${SERVER_MAIN_UUID}
-    extra_hosts:
-      - "physical-host:host-gateway"
+    networks:
+      - minecraft
 
   listener-alt:
     build: src/listener
@@ -74,6 +78,9 @@ services:
     environment:
       SERVER_NAME: Alternate
       SERVER_UUID: ${SERVER_ALTERNATE_UUID}
-    extra_hosts:
-      - "physical-host:host-gateway"
+    networks:
+      - minecraft
 
+networks:
+  minecraft:
+    driver: bridge
