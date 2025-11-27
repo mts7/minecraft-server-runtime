@@ -28,7 +28,7 @@ def send_to_slack(message: str) -> None:
             {
                 "type": "section",
                 "text": {
-                    "type": "plain_text",
+                    "type": "mrkdwn",
                     "text": message
                 }
             }
