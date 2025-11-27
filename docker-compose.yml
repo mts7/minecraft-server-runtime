@@ -36,10 +36,9 @@ services:
       - 1.1.1.1
 
   mc_proxy:
-    image: docker.io/alpine/socat
+    image: nginx:stable-alpine
     container_name: mc_proxy
     restart: always
-    command: sh -c "socat TCP-LISTEN:25565,fork TCP-CONNECT:crafty:25566,source-ip-header=X-Real-IP"
     ports:
       - "25565:25565"
     volumes:
