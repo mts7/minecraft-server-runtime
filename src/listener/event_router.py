@@ -48,8 +48,8 @@ def parse_login(line: str) -> str:
     player_type = "Bedrock" if username.startswith(".") else "Java"
 
     return (
-        f"✅ {player_type} player {username} "
-        f"joined at {location} from {ip_port}."
+        f"✅ _{player_type}_ player *{username}* "
+        f"joined at `{location}` from *{ip_port}*."
     )
 
 
