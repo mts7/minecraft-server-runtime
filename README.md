@@ -29,6 +29,27 @@ Change property `network-compression-threshold` value from 512 to -1.
 
 [Proxy Protocol Support -- Modrinth](https://modrinth.com/mod/proxy-protocol-support)
 
+Add Docker subnet to `config/proxy_protocol_support.json`.
+
+```json
+{
+  "enableProxyProtocol": true,
+  "proxyServerIPs": [
+    "127.0.0.1",
+    "172.18.0.0/16"
+  ],
+  "directAccessIPs": [
+    "127.0.0.1",
+    "172.18.0.0/16",
+    "192.168.0.0/16"
+  ],
+  "whitelistTCPShieldServers": false
+}
+```
+Use `docker network inspect {NETWORK_NAME} | grep Subnet` to determine the
+subnet to add.
+
+
 ## Docker Commands
 
 These commands assume execution from the same directory as the README file.
@@ -54,4 +75,11 @@ docker compose up -d --force-recreate --remove-orphans
 docker pull
 docker compose down
 docker compose up -d
+```
+
+### Determine Networking Status
+
+```shell
+docker network ls
+docker network inspect {NETWORK_NAME}
 ```
