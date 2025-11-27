@@ -35,13 +35,14 @@ services:
       - 1.1.1.1
 
   mc_proxy:
-    image: nginx:stable-alpine
+    image: haproxy:2.9
     container_name: mc_proxy
     restart: always
     ports:
-      - "25565:25565"
+      - "25565:25565/tcp"
+      - "19132:19132/udp"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     depends_on:
       - crafty
 
