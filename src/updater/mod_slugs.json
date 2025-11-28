@@ -1,10 +1,12 @@
 {
   "betterthanmending": "better-than-mending",
+  "c2me": "c2me-fabric",
   "ferritecore": "ferrite-core",
-  "healingcampfire": "healing-campfire",
-  "villagernames": "villager-names-serilum",
   "geyser-geyser": "geyser",
   "gravestones": "pneumono_gravestones",
+  "healingcampfire": "healing-campfire",
+  "noisium": "noisiumforked",
   "pneumonocore": "pneumono_core",
+  "villagernames": "villager-names-serilum",
   "villagerdeathmessages": "villager-death-messages"
 }
