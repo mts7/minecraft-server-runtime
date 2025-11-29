@@ -1,10 +1,16 @@
 #!/bin/bash
 
-VENV_PYTHON="/home/archer/Repositories/minecraft-server-runtime/.venv/bin/python"
-UPDATER_SCRIPT="/home/archer/Repositories/minecraft-server-runtime/src/updater/mod_updater.py"
-SERVERS_DIR="/home/archer/Games/Minecraft/DockerHost/docker/servers"
+. .env
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+VENV_PYTHON="${SCRIPT_DIR}/.venv/bin/python"
+UPDATER_SCRIPT="${SCRIPT_DIR}/src/updater/mod_updater.py"
+SERVERS_DIR="${CRAFTY_DIRECTORY}/docker/servers"
 
 echo "=== Mod Update Run: $(date) ==="
+
+python3 -m venv ${SCRIPT_DIR}/.venv
 
 # Find all directories with a mods subdirectory
 for server_dir in "$SERVERS_DIR"/*/; do
