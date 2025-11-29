@@ -26,8 +26,8 @@ def route_event(line: str) -> None:
             continue
 
         try:
-            message = handler(line)
-            send_to_slack(message)
+            message, summary = handler(line)
+            send_to_slack(message, summary)
         except SkipLogLine:
             pass
 
