@@ -39,5 +39,5 @@ for server_dir in "$SERVERS_DIR"/*/; do
     fi
 done
 
-echo "=== Mod Update Complete: $(date) ===" >> "$LOG_FILE"
+echo "=== Mod Update Complete: $(date) ==="
 echo ""
