@@ -7,7 +7,7 @@ SERVER_UUID = os.getenv("SERVER_UUID")
 SLACK_WEBHOOK = os.getenv("SLACK_WEBHOOK")
 
 
-def send_to_slack(message: str) -> None:
+def send_to_slack(message: str, summary: str) -> None:
     if not SLACK_WEBHOOK:
         print("[slack] No webhook configured.")
         return
@@ -33,7 +33,7 @@ def send_to_slack(message: str) -> None:
                 }
             }
         ],
-        "text": f"Minecraft Alert on {SERVER_NAME} {SERVER_UUID}"
+        "text": f"Minecraft {SERVER_NAME} Alert: {summary}"
     }
 
     try:
