@@ -11,13 +11,21 @@ services:
       - "8022:8000"
       - "8422:8443"
 
-      # Server - Alternate
+      # Server 1
+      - "8123:8123"
+      - "19132:19132/udp"
+
+      # Server 2
       - "8122:8122"
       - "19122:19122/udp"
 
-      # Server - Main
-      - "8123:8123"
-      - "19132:19132/udp"
+      # Server 3
+      - "8121:8121"
+      - "19131:19131/udp"
+
+      # Server 4
+      - "8124:8124"
+      - "19134:19134/udp"
     volumes:
       - ${CRAFTY_DIRECTORY}/docker/backups:/crafty/backups
       - ${CRAFTY_DIRECTORY}/docker/logs:/crafty/logs
@@ -39,41 +47,13 @@ services:
     environment:
       - TZ=America/New_York
     ports:
-      - "25565:25565/tcp"  # Main
-      - "25562:25562/tcp"  # Alternate
+      - "25565:25565/tcp"  # Server 1
+      - "25562:25562/tcp"  # Server 2
+      - "25563:25563/tcp"  # Server 3
+      - "25564:25564/tcp"  # Server 4
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     restart: unless-stopped
-
-#  listener-main:
-#    build: src/listener
-#    container_name: listener-main-notifier
-#    depends_on:
-#      - crafty
-#    restart: always
-#    volumes:
-#      - ./src/listener:/app:ro
-#      - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_MAIN_UUID}/logs:/logs:ro
-#    env_file: .env
-#    environment:
-#      TZ: America/New_York
-#      SERVER_NAME: Main
-#      SERVER_UUID: ${SERVER_MAIN_UUID}
-#
-#  listener-alt:
-#    build: src/listener
-#    container_name: listener-alt-notifier
-#    depends_on:
-#      - crafty
-#    restart: always
-#    volumes:
-#      - ./src/listener:/app:ro
-#      - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_ALTERNATE_UUID}/logs:/logs:ro
-#    env_file: .env
-#    environment:
-#      TZ: America/New_York
-#      SERVER_NAME: Alternate
-#      SERVER_UUID: ${SERVER_ALTERNATE_UUID}
 
   listener-notifier:
     build: src/listener
