@@ -2,12 +2,10 @@ import os
 
 import requests
 
-SERVER_NAME = os.getenv("SERVER_NAME")
-SERVER_UUID = os.getenv("SERVER_UUID")
 SLACK_WEBHOOK = os.getenv("SLACK_WEBHOOK")
 
 
-def send_to_slack(message: str, summary: str) -> None:
+def send_to_slack(name: str, message: str, summary: str) -> None:
     if not SLACK_WEBHOOK:
         print("[slack] No webhook configured.")
         return
@@ -18,8 +16,7 @@ def send_to_slack(message: str, summary: str) -> None:
                 "type": "header",
                 "text": {
                     "type": "plain_text",
-                    "text": f"{SERVER_NAME} Minecrafter Server "
-                            f"at {SERVER_UUID}"
+                    "text": f"{name} Minecrafter Server "
                 }
             },
             {
@@ -33,7 +30,7 @@ def send_to_slack(message: str, summary: str) -> None:
                 }
             }
         ],
-        "text": f"Minecraft {SERVER_NAME} Alert: {summary}"
+        "text": f"Minecraft {name} Alert: {summary}"
     }
 
     try:

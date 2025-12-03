@@ -75,3 +75,16 @@ services:
       SERVER_NAME: Alternate
       SERVER_UUID: ${SERVER_ALTERNATE_UUID}
 
+  listener-discover:
+    build: src/listener
+    container_name: listener-notifier
+    depends_on:
+      - crafty
+    restart: always
+    volumes:
+      - ./src/listener:/app:ro
+      - ${CRAFTY_DIRECTORY}/docker/servers:/servers:ro
+    env_file: .env
+    environment:
+      TZ: America/New_York
+

@@ -20,14 +20,14 @@ def register_event(trigger: str):
     return decorator
 
 
-def route_event(line: str) -> None:
+def route_event(name: str, line: str) -> None:
     for trigger, handler in EVENT_HANDLERS.items():
         if trigger not in line:
             continue
 
         try:
             message, summary = handler(line)
-            send_to_slack(message, summary)
+            send_to_slack(name, message, summary)
         except SkipLogLine:
             pass
 
