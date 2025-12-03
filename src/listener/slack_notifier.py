@@ -16,7 +16,7 @@ def send_to_slack(name: str, message: str, summary: str) -> None:
                 "type": "header",
                 "text": {
                     "type": "plain_text",
-                    "text": f"{name} Minecrafter Server "
+                    "text": f"Minecraft {name}"
                 }
             },
             {
