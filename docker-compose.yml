@@ -84,6 +84,7 @@ services:
     volumes:
       - ./src/listener:/app:ro
       - ${CRAFTY_DIRECTORY}/docker/servers:/servers:ro
+      - ${CRAFTY_DIRECTORY}/docker/config/db:/crafty_db:ro
     env_file: .env
     environment:
       TZ: America/New_York
