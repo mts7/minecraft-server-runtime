@@ -75,7 +75,7 @@ services:
 #      SERVER_NAME: Alternate
 #      SERVER_UUID: ${SERVER_ALTERNATE_UUID}
 
-  listener-discover:
+  listener-notifier:
     build: src/listener
     container_name: listener-notifier
     depends_on:
