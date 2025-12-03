@@ -45,35 +45,35 @@ services:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     restart: unless-stopped
 
-  listener-main:
-    build: src/listener
-    container_name: listener-main-notifier
-    depends_on:
-      - crafty
-    restart: always
-    volumes:
-      - ./src/listener:/app:ro
-      - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_MAIN_UUID}/logs:/logs:ro
-    env_file: .env
-    environment:
-      TZ: America/New_York
-      SERVER_NAME: Main
-      SERVER_UUID: ${SERVER_MAIN_UUID}
-
-  listener-alt:
-    build: src/listener
-    container_name: listener-alt-notifier
-    depends_on:
-      - crafty
-    restart: always
-    volumes:
-      - ./src/listener:/app:ro
-      - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_ALTERNATE_UUID}/logs:/logs:ro
-    env_file: .env
-    environment:
-      TZ: America/New_York
-      SERVER_NAME: Alternate
-      SERVER_UUID: ${SERVER_ALTERNATE_UUID}
+#  listener-main:
+#    build: src/listener
+#    container_name: listener-main-notifier
+#    depends_on:
+#      - crafty
+#    restart: always
+#    volumes:
+#      - ./src/listener:/app:ro
+#      - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_MAIN_UUID}/logs:/logs:ro
+#    env_file: .env
+#    environment:
+#      TZ: America/New_York
+#      SERVER_NAME: Main
+#      SERVER_UUID: ${SERVER_MAIN_UUID}
+#
+#  listener-alt:
+#    build: src/listener
+#    container_name: listener-alt-notifier
+#    depends_on:
+#      - crafty
+#    restart: always
+#    volumes:
+#      - ./src/listener:/app:ro
+#      - ${CRAFTY_DIRECTORY}/docker/servers/${SERVER_ALTERNATE_UUID}/logs:/logs:ro
+#    env_file: .env
+#    environment:
+#      TZ: America/New_York
+#      SERVER_NAME: Alternate
+#      SERVER_UUID: ${SERVER_ALTERNATE_UUID}
 
   listener-discover:
     build: src/listener
