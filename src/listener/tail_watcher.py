@@ -1,5 +1,4 @@
 import subprocess  # nosec[B404]
-import threading
 import time
 from typing import Generator
 
@@ -19,22 +18,45 @@ def tail_log(path: str) -> Generator[str, None, None]:
         yield line.rstrip("\n")
 
 
-def watch_server(name: str, log_path: str):
-    for line in tail_log(log_path):
-        route_event(name, line)
+def update_watched_tails(watched_tails: dict[str, Generator[str, None, None]]):
+    """
+    Perform one iteration of server discovery and tailing.
+
+    - Adds new servers
+    - Removes deleted servers
+    - Yields new log lines to route_event
+    """
+    servers = discover_servers()
+    current_uuids = set(servers.keys())
+    watched_uuids = set(watched_tails.keys())
+
+    # Start new tail generators
+    for uuid in current_uuids - watched_uuids:
+        info = servers[uuid]
+        print(f"[tail] Starting watcher for {info['name']} ({uuid})")
+        watched_tails[uuid] = tail_log(info["log_file"])
+
+    # Remove deleted servers
+    for uuid in watched_uuids - current_uuids:
+        print(f"[tail] Stopping watcher for {uuid}")
+        del watched_tails[uuid]
+
+    # Read lines from active tails
+    for uuid, gen in watched_tails.items():
+        info = servers[uuid]
+        try:
+            while True:
+                line = next(gen)
+                route_event(info["name"], line)
+        except StopIteration:
+            pass
 
 
 def main():
-    servers = discover_servers()
-    for uuid, info in servers.items():
-        threading.Thread(
-            target=watch_server,
-            args=(info["name"], info["log_file"]),
-            daemon=True
-        ).start()
-
+    watched_tails: dict[str, Generator[str, None, None]] = {}
     while True:
-        time.sleep(10)
+        update_watched_tails(watched_tails)
+        time.sleep(1)
 
 
 if __name__ == "__main__":
