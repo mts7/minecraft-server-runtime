@@ -17,6 +17,7 @@ def register_event(trigger: str):
     def decorator(func):
         EVENT_HANDLERS[trigger] = func
         return func
+
     return decorator
 
 
