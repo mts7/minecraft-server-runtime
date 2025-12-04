@@ -256,10 +256,10 @@ def main() -> None:
             except UpdateError as e:
                 logging.error(f"❌ Error: {e}")
         if updates > 0:
-            server_name = get_server_name(args["uuid"])
+            server_name = get_server_name(args.uuid)
             send_to_slack(
                 server_name,
-                f"Need to restart *{server_name}* at _{args["uuid"]}_"
+                f"Need to restart *{server_name}* at _{args.uuid}_"
                 f" due to {updates} mod updates.",
                 f"Updated {updates} mods"
             )
