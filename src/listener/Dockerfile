@@ -1,9 +1,10 @@
-FROM python:3.11-slim
+FROM python:3.14-slim
 
 # Create working directory
 WORKDIR /app
 
 COPY requirements.txt /app/requirements.txt
+COPY src /app/src
 
 # Install minimal dependencies
 RUN apt-get update && apt-get install -y procps
