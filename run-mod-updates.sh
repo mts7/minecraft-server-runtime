@@ -32,7 +32,7 @@ for server_dir in "$SERVERS_DIR"/*/; do
 
     echo "Updating mods for server: $uuid"
 
-    "$VENV_PYTHON" "$UPDATER_SCRIPT" --config "$config_file"
+    "$VENV_PYTHON" "$UPDATER_SCRIPT" --config "$config_file" --uuid "$uuid"
 
     if [ $? -eq 0 ]; then
         echo "  ✓ Success for $uuid"

@@ -1,7 +1,9 @@
 import os
 
 import requests
+from dotenv import load_dotenv
 
+load_dotenv()
 SLACK_WEBHOOK = os.getenv("SLACK_WEBHOOK")
 
 

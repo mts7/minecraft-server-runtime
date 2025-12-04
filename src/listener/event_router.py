@@ -1,6 +1,6 @@
 import re
 
-from slack_notifier import send_to_slack
+from src.utility.slack_notifier import send_to_slack
 
 
 class SkipLogLine(Exception):

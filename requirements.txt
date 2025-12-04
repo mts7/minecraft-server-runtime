@@ -1,2 +1,4 @@
 -r src/listener/requirements.txt
 -r src/updater/requirements.txt
+-r src/utility/requirements.txt
+tox

@@ -4,7 +4,8 @@ import time
 from typing import Generator
 
 from event_router import route_event
-from server_discovery import discover_servers
+
+from src.utility.server_discovery import discover_servers
 
 
 def tail_log(path: str) -> Generator[str, None, None]:
