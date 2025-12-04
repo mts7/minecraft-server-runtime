@@ -10,6 +10,9 @@ from typing import Any, Dict, TypedDict
 
 import requests
 
+from src.utility.server_discovery import get_server_name
+from src.utility.slack_notifier import send_to_slack
+
 LOG_FILE: str = "mod_update.log"
 LOG_LEVELS: Dict[str, int] = {
     "CRITICAL": logging.CRITICAL,
@@ -49,7 +52,7 @@ class NoCompatibleVersion(UpdateError):
 
 
 def get_latest_compatible_version(
-    slug: str, game_version: str, loader: str
+        slug: str, game_version: str, loader: str
 ) -> Dict[str, Any]:
     versions = _get_version_data(slug, game_version, loader, "release")
     if not versions:
@@ -84,7 +87,7 @@ def get_slug_from_filename(filename: str) -> str:
 
 
 def _get_version_data(
-    slug: str, game_version: str, loader: str, version_type: str
+        slug: str, game_version: str, loader: str, version_type: str
 ) -> list[Dict[str, Any]]:
     """Helper function to get versions from the Modrinth API."""
     url = f"{MODRINTH_API}/project/{slug}/version"
@@ -138,6 +141,8 @@ def parse_args() -> argparse.Namespace:
                         help="Logging level")
     parser.add_argument("--config", type=Path,
                         help="Path to config file (optional)")
+    parser.add_argument("--uuid", type=str,
+                        help="UUID (optional)")
 
     return parser.parse_args()
 
@@ -204,9 +209,9 @@ def setup_logging(log_path: Path, level_str: str) -> None:
 
 
 def update_mod(
-    file: Path, mods_dir: Path,
-    game_version: str, loader: str
-) -> None:
+        file: Path, mods_dir: Path,
+        game_version: str, loader: str
+) -> int:
     slug: str = get_slug_from_filename(file.name)
     latest: Dict[str, Any] = get_latest_compatible_version(
         slug, game_version, loader
@@ -215,7 +220,7 @@ def update_mod(
     latest_filename: str = latest["files"][0]["filename"]
     if latest_filename == file.name:
         logging.info(f"File {latest_filename} matches current file")
-        return
+        return 0
 
     logging.info(f"\nUpdating {file.name} → {latest_filename}")
     url: str = latest["files"][0]["url"]
@@ -227,6 +232,8 @@ def update_mod(
     logging.debug(f"Deleting {file.name}")
     file.unlink()
 
+    return 1
+
 
 def main() -> None:
     try:
@@ -236,9 +243,11 @@ def main() -> None:
         log_path: Path = Path(settings["log_path"]) / LOG_FILE
         setup_logging(log_path, settings["log_level"])
 
+        updates = 0
+
         for mod_file in settings["mods_dir"].glob("*.jar"):
             try:
-                update_mod(
+                updates += update_mod(
                     mod_file,
                     settings["mods_dir"],
                     settings["game_version"],
@@ -246,6 +255,14 @@ def main() -> None:
                 )
             except UpdateError as e:
                 logging.error(f"❌ Error: {e}")
+        if updates > 0:
+            server_name = get_server_name(args.uuid)
+            send_to_slack(
+                server_name,
+                f"Need to restart *{server_name}* at _{args.uuid}_"
+                f" due to {updates} mod updates.",
+                f"Updated {updates} mods"
+            )
     except Exception as e:
         logging.error(f"Unknown exception: {e}")
 

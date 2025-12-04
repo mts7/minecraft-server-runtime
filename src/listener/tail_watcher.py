@@ -3,8 +3,8 @@ import threading
 import time
 from typing import Generator
 
-from event_router import route_event
-from server_discovery import discover_servers
+from src.listener.event_router import route_event
+from src.utility.server_discovery import discover_servers
 
 
 def tail_log(path: str) -> Generator[str, None, None]:
@@ -15,8 +15,9 @@ def tail_log(path: str) -> Generator[str, None, None]:
         text=True,
         bufsize=1,
     )
-    for line in proc.stdout:
-        yield line.rstrip("\n")
+    if proc.stdout:
+        for line in proc.stdout:
+            yield line.rstrip("\n")
 
 
 def watch_server(name: str, log_path: str):
