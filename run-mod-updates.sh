@@ -5,7 +5,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 VENV="${SCRIPT_DIR}/.venv"
-VENV_PYTHON="${VENV}/bin/python"
+VENV_PYTHON="${VENV}/bin/python3"
 UPDATER_SCRIPT="src.updater.mod_updater"
 SERVERS_DIR="${CRAFTY_DIRECTORY}/docker/servers"
 
@@ -13,7 +13,7 @@ echo "=== Mod Update Run: $(date) ==="
 
 cd "$SCRIPT_DIR"
 python3 -m venv ${VENV}
-"${VENV_PYTHON}" install -r requirements.txt
+"${VENV_PYTHON}" -m pip install -r requirements.txt
 
 # Find all directories with a mods subdirectory
 for server_dir in "$SERVERS_DIR"/*/; do
