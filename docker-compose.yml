@@ -56,13 +56,15 @@ services:
     restart: unless-stopped
 
   listener-notifier:
-    build: src/listener
+    build:
+      context: .
+      dockerfile: src/listener/Dockerfile
     container_name: listener-notifier
     depends_on:
       - crafty
     restart: always
     volumes:
-      - ./src/listener:/app:ro
+      - ./src:/app/src:ro
       - ${CRAFTY_DIRECTORY}/docker/servers:/servers:ro
       - ${CRAFTY_DIRECTORY}/docker/config/db:/crafty_db:ro
     env_file: .env

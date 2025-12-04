@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 ENV PYTHONUNBUFFERED=1
 
 # Run the script on container start
-CMD ["python", "listener.py"]
+CMD ["python3", "-m", "src.listener.listener"]
