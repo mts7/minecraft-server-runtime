@@ -49,7 +49,7 @@ services:
     ports:
       - "25565:25565/tcp"  # Server 1
       - "25562:25562/tcp"  # Server 2
-      - "25563:25563/tcp"  # Server 3
+      - "25561:25561/tcp"  # Server 3
       - "25564:25564/tcp"  # Server 4
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
