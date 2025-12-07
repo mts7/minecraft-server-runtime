@@ -26,6 +26,7 @@ services:
       # Server 4
       - "8124:8124"
       - "19134:19134/udp"
+      - "25564:25564"
     volumes:
       - ${CRAFTY_DIRECTORY}/docker/backups:/crafty/backups
       - ${CRAFTY_DIRECTORY}/docker/logs:/crafty/logs
@@ -50,7 +51,6 @@ services:
       - "25565:25565/tcp"  # Server 1
       - "25562:25562/tcp"  # Server 2
       - "25561:25561/tcp"  # Server 3
-      - "25564:25564/tcp"  # Server 4
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     restart: unless-stopped
