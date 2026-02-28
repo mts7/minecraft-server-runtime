@@ -8,8 +8,8 @@ UPDATER_SCRIPT="src.updater.mod_updater"
 
 echo "=== Mod Update Run: $(date) ==="
 
-cd "$SCRIPT_DIR"
-python3 -m venv ${VENV}
+cd "$SCRIPT_DIR" || exit
+python3 -m venv "${VENV}"
 "${VENV_PYTHON}" -m pip install -r requirements.txt
 
 . .env
